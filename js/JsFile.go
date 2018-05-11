@@ -9,9 +9,9 @@ import (
 
 type JsFile struct {
 
-	filename    string
+	Filename    string
 	updatedTime time.Time
-	js          string
+	JsScript    string
 }
 
 var g_jsFilesByFilename = make(map[string] *JsFile)
@@ -30,7 +30,7 @@ func LoadJsFile(filename string) *JsFile {
 
 	if !ok {
 
-		jsfile = &JsFile{filename: filename}
+		jsfile = &JsFile{Filename: filename}
 
 		jsfile.check()
 
@@ -42,16 +42,16 @@ func LoadJsFile(filename string) *JsFile {
 
 func (jsfile *JsFile) check() bool {
 
-	info, err := os.Stat(jsfile.filename)
+	info, err := os.Stat(jsfile.Filename)
 
 	if err != nil {
-		fmt.Println(err, " Unable to open JS file ", jsfile.filename)
-		panic("Unable to open JS file " + jsfile.filename)
+		fmt.Println(err, " Unable to open JS file ", jsfile.Filename)
+		panic("Unable to open JS file " + jsfile.Filename)
 	}
 
 	if info == nil {
-		fmt.Println("Unable to open file ", jsfile.filename)
-		panic("Unable to open JS file " + jsfile.filename)
+		fmt.Println("Unable to open file ", jsfile.Filename)
+		panic("Unable to open JS file " + jsfile.Filename)
 	}
 
 	updatedTime :=  info.ModTime()
@@ -60,11 +60,11 @@ func (jsfile *JsFile) check() bool {
 
 		jsfile.updatedTime = updatedTime
 
-		buf, _ := ioutil.ReadFile(jsfile.filename)
+		buf, _ := ioutil.ReadFile(jsfile.Filename)
 
-		jsfile.js = string(buf)
+		jsfile.JsScript = string(buf)
 
-		fmt.Println("loaded js file..." + jsfile.filename)
+		fmt.Println("loaded js file..." + jsfile.Filename)
 
 		return true
 	}
